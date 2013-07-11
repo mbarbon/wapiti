@@ -114,7 +114,7 @@ class HTTPResource(object):
                 # handle semicolon as separator, as per http://www.w3.org/TR/1999/REC-html401-19991224/appendix/notes.html#h-B.2.2
                 query_string = query_string.replace(';', '&')
                 for kv in query_string.split("&"):
-                    if kv.find("=") > 0:
+                    if kv.find("=") >= 0:
                         self._get_params.append(kv.split("=", 1))
                     else:
                         # ?param without value
