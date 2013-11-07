@@ -434,6 +434,18 @@ class HTTP(object):
     def send(self, target, method="",
              get_params=None, post_params=None, file_params=None,
              headers={}):
+        try:
+            return self._send(target, method, get_params, post_params, file_params, headers)
+        except requests.exceptions.SSLError, e:
+            if e.message == 'The read operation timed out':
+                raise requests.exceptions.Timeout("%s: %s" % (
+                    type(e).__name__, e.message))
+            else:
+                raise
+
+    def _send(self, target, method="",
+              get_params=None, post_params=None, file_params=None,
+              headers={}):
         "Send a HTTP Request. GET or POST (if post_params is set)."
         resp = None
         _headers = {}
